@@ -6,4 +6,4 @@
 > このリポジトリでは、基礎文法・入出力・条件分岐・繰り返し・メソッドなどを、コードを書きながら学んでいきます。
 
 
-[rubyの公式ページ](https://www.ruby-lang.org/ja/documentation/rr)
+[rubyの公式ページ](https://www.ruby-lang.org/ja/)
