@@ -128,6 +128,23 @@ end while number <= 5
 
 # えっと、無限ループ？　怖いですね。
 # でも、安心してください。　中でbreak文を使ってループを抜けることができます。
+# 例: 1から5までの数字を表示する (roof do - end 形式)
+
+puts "roof do - end 形式の例です。"
+number = 1
+roof do
+  puts "今の数字は#{number} です。"
+  number += 1
+  break if number > 5 # end if文の一行バージョン
+end
+
+# 他の機能も少し調べてみましょう
+
+# next分
+
+# redo分　ー>　これは少し特殊です。　ループの現在の反復をやり直すために使います。
+
+# until分 ー> while文の逆です。　条件が偽の間、処理を繰り返します。
 
 
 
