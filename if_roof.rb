@@ -21,15 +21,15 @@
 puts "grade計算機"
 print "点数を入力してください(0 - 100点まで)　: "
 STDOUT.flush
-score = gets.chomp.to_i
+score1 = gets.chomp.to_i
 
-if score >= 90
+if score1 >= 90
   grade = "A"
-elsif score >= 80
+elsif score1 >= 80
   grade = "B"
-elsif score >= 70
+elsif score1 >= 70
   grade = "C"
-elsif score >= 60
+elsif score1 >= 60
   grade = "D"
 else
   grade = "F"
@@ -38,7 +38,6 @@ end
 puts "あなたのgradeは #{grade} です。"
 # これで、ユーザーが入力した点数に基づいて、対応するgradeを表示することができます。
 # 状況に応じてifだけ使ったり、elsifやelseを追加したりできます。
-
 
 # 二番目case文
 
@@ -52,10 +51,83 @@ puts "あなたのgradeは #{grade} です。"
 #   処理
 # end
 
+# 先の例をcase文で書き直してみましょう。
+
+#grade計算機 (case文バージョン)
+puts "grade計算機"
+print "点数を入力してください(0 - 100点まで)　: "
+STDOUT.flush
+score2 = gets.chomp.to_i
+
+case score2
+when 90..100
+  grade = "A"
+when 80..89
+  grade = "B"
+when 70..79
+  grade = "C"
+when 60..69
+  grade = "D"
+else
+  grade = "F"
+end
+
+puts "あなたのgradeは #{grade} です。"
+# case文は特定の値に基づいて処理を分岐させるのに便利です。
+# Rubyの場合、範囲（Range）を指定することもできます。
+# n..m は n から m まで（mを含む）の範囲を表します。
+# n...m は n から m-1 まで（mを含まない）の範囲を表します。
+# また、Rubyのcase文はswitch文のようなフォールスルーがないため、breakは不要です。 # Rubyの特徴
+# 最後に、else節は省略可能です（ただし想定外の入力に備えるなら書くのがおすすめです）。
+
+# ========================================================================================= 
+
 # 次に反復文を見てみましょう。
 # Rubyでは、主に3つの反復文があります。
 # 1. while文
 # 2. for文
 # 3. eachメソッド
+
+# まず、while文から見てみましょう
+# while 条件式
+#  処理
+# end
+
+# 例: 1から5までの数字を表示する
+
+number = 1 
+while number <= 5
+  puts "今の数字は#{number} です。"
+  number += 1 # number = number + 1 と同じ意味 → 逆に　number -= 1 は引き算　とか　number +=2, *=2 などもあります。
+end
+
+# これが基本的なwhile文の使い方です。
+# 実は,while文には他の形もあります。
+# 二つの違う形を見てみましょう。
+
+# 1. begin - end 形式
+# begin
+#   処理
+# end while 条件式
+# これは必ずbeginの内容を一回は実行したい場合に使います。
+
+# 例: 1から5までの数字を表示する (begin - end 形式)
+
+number = 1
+begin
+  puts "今の数字は#{number} です。"
+  number += 1
+end while number <= 5
+
+# 2. loof do - end 形式
+# loof doは　簡単に話すと無限ループを作るために使います
+
+# roof do 
+#  処理
+# end
+
+# えっと、無限ループ？　怖いですね。
+# でも、安心してください。　中でbreak文を使ってループを抜けることができます。
+
 
 
