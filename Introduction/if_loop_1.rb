@@ -95,6 +95,7 @@ puts "あなたのgradeは #{grade} です。"
 
 # 例: 1から5までの数字を表示する
 
+puts "while文の例です。"
 number = 1 
 while number <= 5
   puts "今の数字は#{number} です。"
@@ -113,16 +114,17 @@ end
 
 # 例: 1から5までの数字を表示する (begin - end 形式)
 
+puts "begin - end 形式の例です。"
 number = 1
 begin
   puts "今の数字は#{number} です。"
   number += 1
 end while number <= 5
 
-# 2. loof do - end 形式
-# loof doは　簡単に話すと無限ループを作るために使います
+# 2. loop do - end 形式
+# loop doは　簡単に話すと無限ループを作るために使います
 
-# roof do 
+# loop do 
 #  処理
 # end
 
@@ -142,7 +144,7 @@ end
 
 # next文 ー> ループの現在の反復をスキップして、次の反復に進みます。
 # 簡単に言うと、continue文と同じです。
-# 例　：　１から10までの数字を表示しますが、偶数はスキップします。
+# 例：１から10までの数字を表示しますが、偶数はスキップします。
 puts "next文の例です。(偶数をスキップします)"
 number = 0
 while number < 10
@@ -153,7 +155,63 @@ end
 # .even? メソッドは、数が偶数かどうかをチェックします。
 # .odd? メソッドは、数が奇数かどうかをチェックします。
 
-# redo文　ー>　これは少し特殊です。　ループの現在の反復をやり直すために使います。
+# redo文 -> これは少し特殊です。ループの現在の反復を最初からやり直すために使います。
+# 使い方を間違えると無限ループになる可能性があるので、注意してください。
+puts "redo文の例です。(有効な入力が得られるまで繰り返します)"
+
+loop do 
+  print "y/n で答えてください : "
+  s = gets.chomp
+
+  if s != "y" && s != "n" # != は「等しくない」という意味です && は「かつ」という意味です
+    puts "無効な入力です。もう一度試してください。"
+    redo  # 無効な入力の場合、再度同じ反復をやり直します
+  end 
+
+  puts " あなたの入力は #{s} です。"
+  break
+end
 
 # until文 ー> while文の逆です。　条件が偽の間、処理を繰り返します.
+# つまり　trueになるまで繰り返します。
+# until 条件式
+#   処理
+# end
 
+# 例: 1から5までの数字を表示する (until文)
+
+puts "until文の例です。"
+number = 1
+until number > 5
+  puts "今の数字は#{number} です。"
+  number += 1
+end
+
+# rescue -> 例外処理（エラー処理）です。エラーが発生してもプログラムを止めずに処理できます。
+# 例：数字以外が入力されたら、0にします。
+n = Integer(gets.chomp) rescue 0
+
+# unless -> if の逆です。条件が false のときに実行します（= if !条件）。
+# 例：n が 0..9 に含まれていない場合にメッセージを出します。
+puts "範囲外です。" unless (0..9).include?(n)
+
+# include?(x) -> 「含まれているか？」を true/false で返します。
+# Range / Array / String などで使えます。
+puts (0..9).include?(n)        # n が 0..9 なら true
+puts ["y", "n"].include?("y")  # 配列の中にあるか
+puts "hello".include?("ell")   # 文字列に含まれるか
+
+# よくある入力チェック例（0..100だけ許可）
+loop do
+  print "点数(0..100)を入力してください: "
+  STDOUT.flush
+  score = Integer(gets.chomp) rescue nil
+
+  unless score && (0..100).include?(score)
+    puts "無効な入力です。0〜100の数字を入力してください。"
+    next
+  end
+
+  puts "入力OK: #{score}"
+  break
+end
