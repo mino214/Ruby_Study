@@ -59,3 +59,51 @@ default_test("red")
 # 他に四つくらい持って調べてみましょう
 
 # 1. return 省略
+# 最後の式が戻り値になります
+puts "\n\nreturn省略　: "
+
+def return_omission(x, y)
+    x * y
+end
+puts "10 * 7 = #{return_omission(10,7)}"
+
+# 2. arrayを使って複数の値を返す
+puts "\n\n複数の値を返す　: "
+def min_max(arr)
+  [arr.min, arr.max]
+end
+
+mn, mx = min_max([3, 7, 2, 9])
+puts "min = #{mn}, max = #{mx}"
+
+# 3.返還メソッドに？を付ける
+# ?を付けることで、真偽値を返すメソッドであることを示す慣習があります
+puts "\n\nメソッドに？を付ける例　: "
+def adult?(age)
+    age >=20
+end
+puts "18歳は成人ですか？ #{adult?(18)}"
+puts "25歳は成人ですか？ #{adult?(25)}"
+
+# 4.返還メソッドに！を付ける
+
+puts "\n\nメソッドに!を付ける例　："
+
+s = "hello"
+
+# upcase は「新しい文字列」を返す（元の s は変わらない）
+t = s.upcase
+puts "s = #{s}"  # hello
+puts "t = #{t}"  # HELLO
+
+# upcase! は「元の文字列 s を直接変更する（破壊的）」メソッド
+s.upcase!
+puts "s = #{s}"  # HELLO
+
+# 注意：!メソッドは「変更した場合はそのオブジェクトを返す」ことが多い
+#       でも、変更が発生しなかった場合は nil を返すことがある（重要！）
+u = "HELLO"
+result = u.upcase!       # すでに大文字なので変更なし → nil になりやすい
+p result                 # nil
+puts "u = #{u}"          # HELLO
+
