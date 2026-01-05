@@ -91,6 +91,44 @@ end
 block_checker { puts "Block is provided!" }
 block_checker
 
-## enumerableモジュール
-# enumerableはRubyの標準ライブラリで、コレクションです（配列やハッシュなど）に対して使います
-# 
+## Enumerableモジュール
+# Enumerable は Ruby の標準機能の1つ（モジュール）で、配列やハッシュなどのコレクションでよく使います。
+# for や while は「どうやって繰り返すか（How）」がコードに出やすいですが、
+# Enumerable を使うと「何をしたいか（What）」をメソッド（map / select / find など）で表現できます。
+# その結果、コードが読みやすく、スッキリ書けるのがメリットです。
+# それでは、いくつかの代表的な Enumerable メソッドを紹介します。
+
+## 1. each メソッド
+
+## 2. map メソッド
+
+## 3. select / reject メソッド
+
+## 4. find / all? / any? / none? メソッド
+
+## 5. reduce メソッド 
+
+## 6. sort / sort_by 
+
+## 7. uniq / compactメソッド
+
+## 8. each_with_index / each_with_object メソッド
+
+## 9. group_by メソッド
+
+## 10. partition メソッド
+
+# 追加情報
+
+## 11. take / drop メソッド
+
+## 12. each_slice / eachcons メソッド
+
+## 13. zip メソッド
+
+## 14. cycle メソッド
+
+
+
+
+
