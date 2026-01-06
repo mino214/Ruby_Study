@@ -1,0 +1,1 @@
+# fileとexceptionの説明ファイルです
