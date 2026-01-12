@@ -1,5 +1,5 @@
 # fileとexceptionの説明ファイルです
-# このファイルーでは, ./files/input0.txt, ./files/input1.txt, ./files/output.txtを使います
+# このファイルーでは, ./text_filesを使います
 
 ## Fileクラスとは？ 
 # ファイルやディレクトリを操作するためのクラスです。
@@ -126,7 +126,6 @@ puts "\n\nFile.read / File.writeの例 : "
 text = File.read(input1, encoding: "UTF-8")
 puts text
 
-output2 = File.join(__dir__, "text_files", "output2.txt")
 File.write(output2, "これはFile.writeによる書き込みテストです。\n2行目の内容です。") # fileを生成する
 puts File.read(output2)
 
@@ -162,6 +161,7 @@ else
   puts "#{output3} は存在しません\n"
 end
 
+File.write(output4, "rename test")
 
 puts "\n\nFile.rename の例 : "
 if File.exist?(output4)
@@ -181,6 +181,38 @@ else
   puts "#{delete_file} は存在しません\n"
 end
 
+# == Exception処理 ==
+# Exception（例外）とは、プログラムの実行中に発生する予期しないエラーや異常な状態のことです。
+# Rubyでは、例外が発生すると、プログラムの実行が中断され、エラーメッセージが表示されます。
+# 例外処理とは、こうした例外が発生した場合に備えて、適切な対応を行う仕組みのことです。
+# Rubyでは、begin〜rescue〜end構文を使って例外処理を行います。  
+
+# 基本形：begin-rescue-else-ensure
+begin
+  # 例外が起きるかもしれない処理
+rescue StandardError => e
+  # 例外が起きたときの処理（e に例外オブジェクト）
+else
+  # 例外が起きなかったときだけ実行
+ensure
+  # 例外が起きても起きなくても必ず実行（後片付け）
+end
+
+# Rubyでは通常、Exception全体をrescueしない（広すぎる）
+# 多くの場合は StandardError をrescueすれば十分です。
+
+puts "\n\n Exception処理の例 : "
+
+# 複数rescue：例外の種類ごとに処理を分けられる
+begin
+  File.read("no_such_file.txt")
+rescue Errno::ENOENT => e
+  puts "ファイルが見つかりません: #{e.message}"
+ensure
+  puts "ensureは必ず実行"
+end
+
+
 # ==パースの例 ==
 # パースとは、データを特定の形式から別の形式に変換することです。
 # 例えば、CSVファイルを読み込んで配列やハッシュに変換したり、JSONデータをオブジェクトに変換したりすることです。
@@ -194,7 +226,7 @@ text = File.read(input2, encoding: "UTF-8").strip
 nums = text
   .split(/\s*,\s*/)          # カンマ区切り（空白OK）
   .reject(&:empty?)
-  .map { |s| Integer(s) }
+  .map { |s| Integer(s) rescue nil }.compact
 puts "[File.read] nums=#{nums.inspect}, sum=#{nums.sum}, avg=#{nums.sum / nums.size.to_f}"
 
 # ================================================
@@ -207,9 +239,9 @@ File.open(input2, "r", encoding: "UTF-8") do |f|
   line = f.gets           # 1行読む（input2は1行想定）
   line = line.to_s.strip  # nil対策
   nums = line
-    .split(/\s*,\s*/)
-    .reject(&:empty?)
-    .map { |s| Integer(s) }
+    .split(/\s*,\s*/)       # カンマ区切り（空白OK）
+    .reject(&:empty?)       # 空文字列を除外
+    .map { |s| Integer(s) } # 数値に変換
 end
 puts "[File.open] nums=#{nums.inspect}, sum=#{nums.sum}"
 
@@ -221,9 +253,9 @@ nums = []
 File.foreach(input1, chomp: true).with_index(1) do |line, lineno|
   next if line.strip.empty?
 
-  begin
+  begin # 数値に変換を試みる
     nums << Integer(line.strip)
-  rescue ArgumentError
+  rescue ArgumentError # 数値に変換できない場合の例外処理
     puts "[File.foreach] line#{lineno} 数値じゃない -> #{line.inspect}"
   end
 end
@@ -234,8 +266,119 @@ puts "[File.foreach] nums=#{nums.inspect}, max=#{nums.max}, min=#{nums.min}"
 File.open(result_file, "w", encoding: "UTF-8") do |f|
   f.puts "Parsed numbers: #{nums.inspect}"
   f.puts "Sum: #{nums.sum}"
-  f.puts "Average: #{nums.sum / nums.size.to_f}" unless nums.empty?
+  f.puts "Average: #{nums.sum / nums.size.to_f}" unless nums.empty? # unlessは空配列対策
   f.puts "Max: #{nums.max}" unless nums.empty?
   f.puts "Min: #{nums.min}" unless nums.empty?
+end
+
+# =====================================================================
+# JsonとCSVファイル
+
+# CSVは「表データ」を扱うための形式です（Excelっぽいやつ）
+# Rubyでは標準ライブラリ csv を require して使います。
+# よくある用途：
+# - CSVを読み込んで集計（平均、最大、学点など）
+# - CSVとして書き出し（結果レポート）
+
+require "csv"
+
+csv_input  = File.join(__dir__, "csv_files", "score.csv")
+csv_output = File.join(__dir__, "csv_files", "result.csv")
+
+puts "\n\n=== CSV parse demo ==="
+
+# 例：scores.csv（想定）
+# id,name,score
+# 251111,Sato,95
+# 251112,Kato,82
+# 251113,Yamada,77
+
+rows = []
+
+begin
+  # headers: true にすると 1行目をヘッダとして扱える
+  CSV.foreach(csv_input, headers: true, encoding: "UTF-8") do |row|
+    # row は CSV::Row（Hashっぽくアクセス可能）
+    id    = row["id"]
+    name  = row["name"]
+    score = Integer(row["score"]) # 数値に変換（失敗すると ArgumentError）
+
+    rows << { id: id, name: name, score: score }
+  end
+
+  # 集計
+  scores = rows.map { |h| h[:score] }
+  avg = scores.sum / scores.size.to_f
+
+  puts "読み込み件数: #{rows.size}"
+  puts "平均点: #{avg}"
+
+  # 学点（grade）を付ける例
+  def grade(score)
+    case score
+    when 90..100 then "A"
+    when 80..89  then "B"
+    when 70..79  then "C"
+    when 60..69  then "D"
+    else              "F"
+    end
+  end
+
+  # 結果CSVとして書き出し
+  CSV.open(csv_output, "w", write_headers: true, headers: ["id", "name", "score", "grade"], encoding: "UTF-8") do |csv|
+    rows.each do |h|
+      csv << [h[:id], h[:name], h[:score], grade(h[:score])]
+    end
+  end
+
+  puts "CSV出力: #{csv_output}"
+
+rescue Errno::ENOENT => e # ::ENOENT は "Error NO ENTry" の略
+  puts "CSVファイルが見つかりません: #{e.message}"
+rescue CSV::MalformedCSVError => e
+  puts "CSVの形式が壊れています: #{e.message}"
+rescue ArgumentError => e
+  puts "数値変換に失敗しました（scoreが数字じゃない可能性）: #{e.message}"
+end
+
+
+# ============================
+# == JSONの例（標準ライブラリ） ==
+# ============================
+# JSONは「設定ファイル」や「APIデータ」で超よく使う形式です。
+# Rubyでは標準ライブラリ json を require して使います。
+# よくある用途：
+# - config.json を読み込んで設定反映
+# - RubyのHash/ArrayをJSONにして保存
+# - Web APIのJSONレスポンスをパース
+
+require "json"
+
+json_input  = File.join(__dir__, "json_files", "config.json")
+json_output = File.join(__dir__, "json_files", "config_saved.json")
+
+puts "\n\n=== JSON parse demo ==="
+
+begin
+  # 1) JSON読み込み（ファイル -> String -> Ruby(Hash/Array)）
+  json_text = File.read(json_input, encoding: "UTF-8")
+  config = JSON.parse(json_text)  # JSONが壊れてると JSON::ParserError
+
+  # config は Hash になる（キーは基本 String）
+  puts "app_name: #{config["app_name"]}"
+  puts "debug: #{config["debug"]}"
+
+  # 2) 値を更新して保存する例
+  config["debug"] = true
+  config["updated_at"] = Time.now.to_s
+
+  # pretty_generate は人間が読みやすい整形JSON
+  File.write(json_output, JSON.pretty_generate(config))
+  puts "JSON保存: #{json_output}"
+
+rescue Errno::ENOENT => e
+  puts "JSONファイルが見つかりません: #{e.message}"
+rescue JSON::ParserError => e
+  puts "JSONのパースに失敗（JSONが壊れてる）: #{e.message}"
 end
 
