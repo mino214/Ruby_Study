@@ -449,4 +449,3 @@ while k
   puts k
   k = k.superclass
 end
-
