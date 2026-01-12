@@ -1,0 +1,5 @@
+Parsed numbers: [10, 40, 20, 30]
+Sum: 100
+Average: 25.0
+Max: 40
+Min: 10
