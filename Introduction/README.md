@@ -30,6 +30,9 @@
 10. `file_exception.rb`
    - ファイル入出力（File I/O）＋例外処理（begin/rescue/ensure）
 
+11. `lambda_callback.rb`
+   - callback処理(Proc/lambda/ブロック)
+
 ---
 
 ### 実行方法
