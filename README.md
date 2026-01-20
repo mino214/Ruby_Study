@@ -14,5 +14,5 @@
 
 ### ディレクトリ構成（例）
 - `Introduction/` : Ruby基礎（文法・入出力・例外処理など）
-- `ruby_on_rails` : Ruby on Rails基礎
+- `ruby_on_rails/` : Ruby on Rails基礎
 - `Ruby_Projects/` : React + Ruby on Rails を使った開発・練習
