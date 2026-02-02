@@ -1,11 +1,36 @@
 .DS_Store
+
+# logs / tmp
 *.log
+log/
 tmp/
+
+# bundler
 vendor/bundle/
 .bundle/
-.env	
-**/log/*
-**/tmp/*
-**/.bundle
-**/vendor/bundle
-**/storage/*
+
+# env / secrets
+.env
+.env.*
+config/master.key
+config/credentials/*.key
+
+# db (sqlite)
+db/*.sqlite3
+db/*.sqlite3-*
+
+# storage
+storage/
+
+# assets / node
+public/assets/
+public/packs/
+public/packs-test/
+node_modules/
+
+# test / debug
+coverage/
+.byebug_history
+
+# editor
+.vscode/
