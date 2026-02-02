@@ -21,5 +21,6 @@ rails -v
 cd ~/フォルダ位置
 rails new フォルダ名前
 cd フォルダ名前
+bin/rails db:prepare 
 bin/rails s
 ```
