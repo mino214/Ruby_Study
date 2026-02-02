@@ -3,4 +3,9 @@
 tmp/
 vendor/bundle/
 .bundle/
-.env
+.env	
+**/log/*
+**/tmp/*
+**/.bundle
+**/vendor/bundle
+**/storage/*
