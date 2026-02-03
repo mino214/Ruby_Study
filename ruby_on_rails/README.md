@@ -1,14 +1,15 @@
 ## 始める前に
-macOS環境でRuby on Railsを使います。
-windowsやlinuxでは異なる場合があります。
+macOS環境でRuby on Railsを使います。  
+WindowsやLinuxでは手順が異なる場合があります。
 
 
-## Railsの設置
-普通ルビィのバージョンマーネジャーは mise, rbenv, asdを使いますが、macOSを使っているので、当プロジェクトにはrbenv使います。
+## Railsのインストール
+Rubyのバージョンマネージャーは、一般的に **mise / rbenv / asdf** が使われます。  
+今回はmacOS環境なので、このプロジェクトでは **rbenv** を使います。
 
 ### ターミナルで
-``` bash
-# homebrewとebenvが設置されるのを前提といます。
+```bash
+# Homebrewとrbenvがインストール済みであることを前提とします。
 gem update --system
 gem install bundler
 gem install rails
@@ -24,3 +25,7 @@ cd フォルダ名前
 bin/rails db:prepare 
 bin/rails s
 ```
+
+---
+### Rails 公式サイト
+### [ruby on rails 公式サイト](https://rubyonrails.org/)
